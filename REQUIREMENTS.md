@@ -40,3 +40,10 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+## Database Schema
+#### Products
+
+id SERIAL PRIMARY KEY  
+name VARCHAR(100)  
+price INT  
+category VARCHAR(100)
