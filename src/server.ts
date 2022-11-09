@@ -7,7 +7,7 @@ const port: string = "0.0.0.0:3000"
 app.use(bodyParser.json())
 
 app.get('/', function (req: Request, res: Response) {
-    res.send('Howdy Universe!')
+    res.send('Howdy Multiverse!')
 })
 
 app.listen(3000, function () {
