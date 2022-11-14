@@ -1,12 +1,12 @@
 import Client from '../database'
 
-export type Order {
+export type Order = {
     id: Number
     userId: Number
     orderStatus: String
 }
 
-export type OrderProduct {
+export type OrderProduct = {
     id: Number
     orderId: Number
     productId: Number
