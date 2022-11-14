@@ -43,25 +43,25 @@ These are the notes from a meeting with the frontend developer that describe wha
 ## Database Schema
 #### Products
 
-id SERIAL PRIMARY KEY  
-name VARCHAR(100)  not_null
-price INT    not_null
-category VARCHAR(100)
+id SERIAL PRIMARY KEY     
+name VARCHAR(100)  not_null   
+price INT    not_null   
+category VARCHAR(100)   
 
 #### Users
 
-id SERIAL PRIMARY KEY  
-first_name VARCHAR(100)  not_null
-last_name VARCHAR(100)   not_null
-password VARCHAR(100)  not_null
+id SERIAL PRIMARY KEY     
+first_name VARCHAR(100)  not_null   
+last_name VARCHAR(100)   not_null   
+password VARCHAR(100)  not_null   
 
 #### Orders
-id SERIAL PRIMARY KEY 
-userId  INT foreign_key to: users[id]
-orderStatus VARCHAR(15)
+id SERIAL PRIMARY KEY    
+userId  INT foreign_key to: users[id]   
+orderStatus VARCHAR(15)   
 
 #### Order_Products
-id SERIAL PRIMARY KEY 
-quanity INT  not_null default 1
-orderId INT  foreign_key to: orders[id]
+id SERIAL PRIMARY KEY    
+quanity INT  not_null default 1   
+orderId INT  foreign_key to: orders[id]   
 productId INT  foreign_key to: products[id]
