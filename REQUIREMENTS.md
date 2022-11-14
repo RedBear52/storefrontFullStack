@@ -25,7 +25,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 -  id
 - name
 - price
-- [OPTIONAL] category
+- category
 
 #### User
 - id
@@ -49,19 +49,22 @@ price INT    not_null
 category VARCHAR(100)   
 
 #### Users
-
+```
 id SERIAL PRIMARY KEY     
 first_name VARCHAR(100)  not_null   
 last_name VARCHAR(100)   not_null   
-password VARCHAR(100)  not_null   
-
+password VARCHAR(100) JWTrequired not_null   
+```
 #### Orders
+```
 id SERIAL PRIMARY KEY    
 userId  INT foreign_key to: users[id]   
 orderStatus VARCHAR(15)   
-
+```
 #### Order_Products
+```
 id SERIAL PRIMARY KEY    
-quanity INT  not_null default 1   
 orderId INT  foreign_key to: orders[id]   
 productId INT  foreign_key to: products[id]
+quanity INT  not_null default 1   
+```
