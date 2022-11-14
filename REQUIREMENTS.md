@@ -22,32 +22,35 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Data Shapes
 #### Product
+```
 -  id
 - name
 - price
 - category
-
+```
 #### User
+```
 - id
 - firstName
 - lastName
 - password
-
+```
 #### Orders
+```
 - id
 - id of each product in the order
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
-
+```
 ## Database Schema
 #### Products
-
+```
 id SERIAL PRIMARY KEY     
 name VARCHAR(100)  not_null   
 price INT    not_null   
 category VARCHAR(100)   
-
+```
 #### Users
 ```
 id SERIAL PRIMARY KEY     
