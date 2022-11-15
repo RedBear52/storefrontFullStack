@@ -1,6 +1,7 @@
 import database from '../database'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -21,8 +22,8 @@ export type User = {
 //     quantity: Number
 // }
 
-export class userStore {
-        async create(newUser: User): Promise<User> {
+export class UserStore {
+    async create(newUser: User): Promise<User> {
         try {
             const connection = await database.connect()
             const sql = 'INSERT INTO users (id, first_name, last_name, password) VALUES ($1, $2, $3, $4) RETURNING * '
@@ -34,13 +35,33 @@ export class userStore {
                 newUser.first_name,
                 newUser.last_name,
                 hashedPassword
-             ])
+                ])
             connection.release()
             return result.rows[0]
         } catch (err) {
-          throw new Error(`Unable to create newUser: ${err}`)
+            throw new Error(`Unable to create newUser: ${err}`)
         }
     }
+
+    async authenticateUser(
+        id: number,
+        password: string
+    ): Promise<User | null> {
+        const connection = await database.connect()
+        const sql = 'SELECT password FROM users WHERE id=$1'
+        const result = await connection.query(sql, [id, password])
+
+        if (result.rows.length) {
+            const user = result.rows[0]
+            console.log(user)
+
+            if (bcrypt.compareSync(password + pepper, user.password)) {
+                return user
+            }
+        }
+        return null
+    }
+
 
     // async index(): Promise<User[]> {
     //     try {
