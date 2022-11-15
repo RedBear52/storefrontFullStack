@@ -7,14 +7,14 @@ export type Product = {
     category: String
 }
 
-export type OrderProduct {
+export type OrderProduct = {
     id: Number
     orderId: Number
     productId: Number
     quantity: Number
 }
 
-export class ProductStore {
+export default class ProductStore {
     async index(): Promise<Product[]> {
         try {
             const connection = await database.connect()

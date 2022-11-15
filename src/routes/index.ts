@@ -9,7 +9,7 @@ routes.use('/user', userRoute)
 routes.use('/product', productRoute)
 routes.use('/order', orderRoute)
 
-routes.get('/', (_req: express.Request, res: express.Response) => {
+routes.get('/api', (_req: express.Request, res: express.Response) => {
     res.send('api route !')
 })
 

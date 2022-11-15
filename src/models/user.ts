@@ -63,29 +63,29 @@ export class UserStore {
     }
 
 
-    // async index(): Promise<User[]> {
-    //     try {
-    //         const connection = await database.connect()
-    //         const sql = 'SELECT * FROM users'
-    //         const result = await connection.query(sql)
-    //         connection.release()
-    //         return result.rows
-    //     } catch (err) {
-    //       throw new Error(`Cannot find requested user index: ${err}`)
-    //     }
-    // }
+    async index(): Promise<User[]> {
+        try {
+            const connection = await database.connect()
+            const sql = 'SELECT * FROM users'
+            const result = await connection.query(sql)
+            connection.release()
+            return result.rows
+        } catch (err) {
+          throw new Error(`Cannot find requested user index: ${err}`)
+        }
+    }
 
-    // async show(id: number): Promise<User> {
-    //     try {
-    //         const connection = await database.connect()
-    //         const sql = 'SELECT * FROM users WHERE id=($1)'
-    //         const result = await connection.query(sql, [id])
-    //         connection.release()
-    //         return result.rows[0]
-    //     } catch (err) {
-    //       throw new Error(`Cannot find user ${id}: ${err}`)
-    //     }
-    // }
+    async show(id: number): Promise<User> {
+        try {
+            const connection = await database.connect()
+            const sql = 'SELECT * FROM users WHERE id=($1)'
+            const result = await connection.query(sql, [id])
+            connection.release()
+            return result.rows[0]
+        } catch (err) {
+          throw new Error(`Cannot find user ${id}: ${err}`)
+        }
+    }
 
 
 
