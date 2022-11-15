@@ -1,4 +1,4 @@
-import Client from '../database'
+import database from '../database'
 
 export type Order = {
     id: Number
@@ -16,7 +16,7 @@ export type OrderProduct = {
 export class OrderStore {
     async index(): Promise<Order[]> {
         try {
-            const connection = await Client.connect()
+            const connection = await database.connect()
             const sql = 'SELECT * FROM orders'
             const result = await connection.query(sql)
             connection.release()
@@ -28,7 +28,7 @@ export class OrderStore {
 
     async show(id: number): Promise<Order> {
         try {
-            const connection = await Client.connect()
+            const connection = await database.connect()
             const sql = 'SELECT * FROM orders WHERE id=($1)'
             const result = await connection.query(sql, [id])
             connection.release()
@@ -40,7 +40,7 @@ export class OrderStore {
 
     async create(order: Order): Promise<Order> {
         try {
-            const connection = await Client.connect()
+            const connection = await database.connect()
             const sql = 'INSERT INTO orders (id, userId, orderStatus) VALUES ($1, $2, $3) RETURNING * '
             const result = await connection.query(sql, [order.id, order.userId, order.orderStatus])
             connection.release()
@@ -52,7 +52,7 @@ export class OrderStore {
 
     async delete(id: number): Promise<Order> {
         try {
-            const connection = await Client.connect()
+            const connection = await database.connect()
             const sql = 'DELETE FROM orders WHERE id=($1)'
             const result = await connection.query(sql, [id])
             connection.release()
@@ -64,7 +64,7 @@ export class OrderStore {
 
     async update(id: number, orderStatus: string): Promise<Order> {
         try {
-            const connection = await Client.connect()
+            const connection = await database.connect()
             const sql = 'UPDATE orders SET orderStatus=$2 WHERE id=$1 RETURNING *'
             const result = await connection.query(sql, [id, orderStatus])
             connection.release()

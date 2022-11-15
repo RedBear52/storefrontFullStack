@@ -1,6 +1,6 @@
-import Client from '../database'
+import database from '../database'
 // Go back and watch JWT lessons???//
-export type User {
+export type User = {
     id: Number
     first_name: String
     last_name: String
@@ -8,17 +8,17 @@ export type User {
 }
 // Go back and watch JWT lessons???//
 
-// export type OrderProduct {
+// export type OrderProduct = {
 //     id: Number
 //     orderId: Number
 //     productId: Number
 //     quantity: Number
 // }
 
-// export class OrderStore {
+// export class OrderStore = {
 //     async index(): Promise<Order[]> {
 //         try {
-//             const connection = await Client.connect()
+//             const connection = await database.connect()
 //             const sql = 'SELECT * FROM orders'
 //             const result = await connection.query(sql)
 //             connection.release()
@@ -30,7 +30,7 @@ export type User {
 
 //     async show(id: number): Promise<Order> {
 //         try {
-//             const connection = await Client.connect()
+//             const connection = await database.connect()
 //             const sql = 'SELECT * FROM orders WHERE id=($1)'
 //             const result = await connection.query(sql, [id])
 //             connection.release()
@@ -42,7 +42,7 @@ export type User {
 
 //     async create(order: Order): Promise<Order> {
 //         try {
-//             const connection = await Client.connect()
+//             const connection = await database.connect()
 //             const sql = 'INSERT INTO orders (id, userId, orderStatus) VALUES ($1, $2, $3) RETURNING * '
 //             const result = await connection.query(sql, [order.id, order.userId, order.orderStatus])
 //             connection.release()
@@ -54,7 +54,7 @@ export type User {
 
 //     async delete(id: number): Promise<Order> {
 //         try {
-//             const connection = await Client.connect()
+//             const connection = await database.connect()
 //             const sql = 'DELETE FROM orders WHERE id=($1)'
 //             const result = await connection.query(sql, [id])
 //             connection.release()
@@ -66,7 +66,7 @@ export type User {
 
 //     async update(id: number, orderStatus: string): Promise<Order> {
 //         try {
-//             const connection = await Client.connect()
+//             const connection = await database.connect()
 //             const sql = 'UPDATE orders SET orderStatus=$2 WHERE id=$1 RETURNING *'
 //             const result = await connection.query(sql, [id, orderStatus])
 //             connection.release()
