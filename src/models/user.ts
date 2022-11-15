@@ -1,78 +1,94 @@
 import database from '../database'
-// Go back and watch JWT lessons???//
+import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const saltRounds = process.env.SALT_ROUNDS as string
+const pepper = process.env.BCRYPT_PASSWORD as string
+
 export type User = {
     id: Number
     first_name: String
     last_name: String
     password: String
 }
-// Go back and watch JWT lessons???//
 
-// export type OrderProduct = {
+// export type userProduct = {
 //     id: Number
-//     orderId: Number
+//     userId: Number
 //     productId: Number
 //     quantity: Number
 // }
 
-// export class OrderStore = {
-//     async index(): Promise<Order[]> {
-//         try {
-//             const connection = await database.connect()
-//             const sql = 'SELECT * FROM orders'
-//             const result = await connection.query(sql)
-//             connection.release()
-//             return result.rows
-//         } catch (err) {
-//           throw new Error(`Cannot find requested order index: ${err}`)
-//         }
-//     }
+export class userStore {
+        async create(newUser: User): Promise<User> {
+        try {
+            const connection = await database.connect()
+            const sql = 'INSERT INTO users (id, first_name, last_name, password) VALUES ($1, $2, $3, $4) RETURNING * '
 
-//     async show(id: number): Promise<Order> {
-//         try {
-//             const connection = await database.connect()
-//             const sql = 'SELECT * FROM orders WHERE id=($1)'
-//             const result = await connection.query(sql, [id])
-//             connection.release()
-//             return result.rows[0]
-//         } catch (err) {
-//           throw new Error(`Cannot find order ${id}: ${err}`)
-//         }
-//     }
+            const hashedPassword = bcrypt.hashSync(newUser.password + pepper, parseInt(saltRounds))
 
-//     async create(order: Order): Promise<Order> {
-//         try {
-//             const connection = await database.connect()
-//             const sql = 'INSERT INTO orders (id, userId, orderStatus) VALUES ($1, $2, $3) RETURNING * '
-//             const result = await connection.query(sql, [order.id, order.userId, order.orderStatus])
-//             connection.release()
-//             return result.rows[0]
-//         } catch (err) {
-//           throw new Error(`Unable to create order: ${err}`)
-//         }
-//     }
+            const result = await connection.query(sql, [
+                newUser.id,
+                newUser.first_name,
+                newUser.last_name,
+                hashedPassword
+             ])
+            connection.release()
+            return result.rows[0]
+        } catch (err) {
+          throw new Error(`Unable to create newUser: ${err}`)
+        }
+    }
 
-//     async delete(id: number): Promise<Order> {
-//         try {
-//             const connection = await database.connect()
-//             const sql = 'DELETE FROM orders WHERE id=($1)'
-//             const result = await connection.query(sql, [id])
-//             connection.release()
-//             return result.rows[0]
-//         } catch (err) {
-//           throw new Error(`Unable to delete order ${id}: ${err}`)
-//         }
-//     }
+    // async index(): Promise<User[]> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'SELECT * FROM users'
+    //         const result = await connection.query(sql)
+    //         connection.release()
+    //         return result.rows
+    //     } catch (err) {
+    //       throw new Error(`Cannot find requested user index: ${err}`)
+    //     }
+    // }
 
-//     async update(id: number, orderStatus: string): Promise<Order> {
-//         try {
-//             const connection = await database.connect()
-//             const sql = 'UPDATE orders SET orderStatus=$2 WHERE id=$1 RETURNING *'
-//             const result = await connection.query(sql, [id, orderStatus])
-//             connection.release()
-//             return result.rows[0]
-//         } catch (err) {
-//           throw new Error(`Unable to update status of order ${id} to ${orderStatus}: ${err}`)
-//         }
-//     }
-// }
+    // async show(id: number): Promise<User> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'SELECT * FROM users WHERE id=($1)'
+    //         const result = await connection.query(sql, [id])
+    //         connection.release()
+    //         return result.rows[0]
+    //     } catch (err) {
+    //       throw new Error(`Cannot find user ${id}: ${err}`)
+    //     }
+    // }
+
+
+
+    // async delete(id: number): Promise<User> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'DELETE FROM users WHERE id=($1)'
+    //         const result = await connection.query(sql, [id])
+    //         connection.release()
+    //         return result.rows[0]
+    //     } catch (err) {
+    //       throw new Error(`Unable to delete user ${id}: ${err}`)
+    //     }
+    // }
+
+    // async update(id: number, userStatus: string): Promise<User> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'UPDATE users SET userStatus=$2 WHERE id=$1 RETURNING *'
+    //         const result = await connection.query(sql, [id, userStatus])
+    //         connection.release()
+    //         return result.rows[0]
+    //     } catch (err) {
+    //       throw new Error(`Unable to update status of user ${id} to ${userStatus}: ${err}`)
+    //     }
+    // }
+}
