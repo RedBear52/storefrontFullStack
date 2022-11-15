@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express'
+import {Request, Response} from 'express'
 import { OrderStore } from '../models/order'
 
 const store = new OrderStore()
@@ -17,9 +17,3 @@ export const closedOrders = async (req: Request, res: Response) => {
     const closedOrdersIndex = await store.show(parseInt(req.params.user_id))
     res.json(closedOrdersIndex)
 }
-
-// const orderRoutes = async (app: express.Application) => {
-//     app.get('/orders', index)
-// }
-
-
