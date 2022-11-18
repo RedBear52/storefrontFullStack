@@ -1,16 +1,16 @@
 import database from '../database'
 
 export type Order = {
-    id: Number
-    userId: Number
-    orderStatus: String
+    id: number
+    userId: number
+    orderStatus: string
 }
 
 export type OrderProduct = {
-    id: Number
-    orderId: Number
-    productId: Number
-    quantity: Number
+    id: number
+    orderId: number
+    productId: number
+    quantity: number
 }
 
 export class OrderStore {

@@ -22,15 +22,15 @@ export const create = async (req: Request, res: Response) => {
     })
     res.json(newProduct)
 }
-
+//  NEEDS BUILDING OUT ///
 export const topFive = async (req: Request, res: Response) => {
-    const closedOrdersIndex = await store.show(parseInt(req.params.user_id))
-    res.json(closedOrdersIndex)
+    const topFiveProducts = await store.index()
+    res.json(topFiveProducts)
 }
 
 export const category = async (req: Request, res: Response) => {
     const closedOrdersIndex = await store.show(parseInt(req.params.user_id))
     res.json(closedOrdersIndex)
 }
-
+//  NEEDS BUILDING OUT ///
 

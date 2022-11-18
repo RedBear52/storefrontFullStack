@@ -10,6 +10,7 @@ const {
     POSTGRES_USER,
     POSTGRES_PASSWORD,
     POSTGRES_TEST_PASSWORD,
+    POSTGRES_TEST_USER,
     ENV
 } = process.env;
 
@@ -19,7 +20,7 @@ if (ENV === 'test') {
     database = new Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_TEST_DB,
-        user: POSTGRES_USER,
+        user: POSTGRES_TEST_USER,
         password: POSTGRES_TEST_PASSWORD
     })
 } else {

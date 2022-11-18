@@ -10,7 +10,11 @@
     {
       "name": "jasmine-spec-reporter#SpecReporter",
       "options": {
-        "displayStacktrace": "all"
+        "displayStacktrace": "all",
+        "displayFailuresSummary": true,
+        "displayFailuredSpec": true,
+        "displaySuiteNumber": true,
+        "displaySpecDuration": true
       }
     }
   ],

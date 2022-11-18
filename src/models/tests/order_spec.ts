@@ -2,42 +2,55 @@ import {Order, OrderStore} from '../order'
 
 const store = new OrderStore()
 
-describe('Order Table Model', () => {
+const order: Order = {
+    id: 1,
+    userId: 52,
+    orderStatus: 'Open'
+};
+
+describe('Order Table Model - Extant Method Checks', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined()
     })
 
-    it('index method should return an array or orders', async () => {
+    it('should have a show method', () => {
+    expect(store.show).toBeDefined();
+    });
+
+    it('should have a create method', () => {
+    expect(store.create).toBeDefined();
+    });
+
+    it('should have a update method', () => {
+    expect(store.update).toBeDefined();
+    });
+
+    it('should have a delete method', () => {
+    expect(store.delete).toBeDefined();
+    });
+})
+
+describe('Order Table Model - Method Implementation Checks', () => {
+    it('index method should return an array of orders', async () => {
         const result = await store.index()
         expect(result).toEqual([])
     })
+
+    it('create method should generate new order', async () => {
+        const result = await store.create({
+            id: 1,
+            userId: 52,
+            orderStatus: 'open'
+        })
+        expect(result).toBeDefined()
+    })
+
+    // it('show method should return expected order object', async () => {
+    //     const result = await store.show(1)
+    //     expect(result).toBeDefined()
+    // })
 })
 
-
-// import { Book, BookStore } from '../book';
-
-// const store = new BookStore()
-
-// describe("Book Model", () => {
-//   it('should have an index method', () => {
-//     expect(store.index).toBeDefined();
-//   });
-
-//   it('should have a show method', () => {
-//     expect(store.index).toBeDefined();
-//   });
-
-//   it('should have a create method', () => {
-//     expect(store.index).toBeDefined();
-//   });
-
-//   it('should have a update method', () => {
-//     expect(store.index).toBeDefined();
-//   });
-
-//   it('should have a delete method', () => {
-//     expect(store.index).toBeDefined();
-//   });
 
 //   it('create method should add a book', async () => {
 //     const result = await store.create({

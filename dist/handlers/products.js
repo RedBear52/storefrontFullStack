@@ -26,9 +26,10 @@ const create = async (req, res) => {
     res.json(newProduct);
 };
 exports.create = create;
+//  NEEDS BUILDING OUT ///
 const topFive = async (req, res) => {
-    const closedOrdersIndex = await store.show(parseInt(req.params.user_id));
-    res.json(closedOrdersIndex);
+    const topFiveProducts = await store.index();
+    res.json(topFiveProducts);
 };
 exports.topFive = topFive;
 const category = async (req, res) => {
@@ -36,3 +37,4 @@ const category = async (req, res) => {
     res.json(closedOrdersIndex);
 };
 exports.category = category;
+//  NEEDS BUILDING OUT ///
