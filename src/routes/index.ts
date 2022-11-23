@@ -5,11 +5,11 @@ import orderRoute from './api/order'
 
 const routes = express.Router()
 
-routes.use('/user', userRoute)
-routes.use('/product', productRoute)
-routes.use('/order', orderRoute)
+routes.use('/users', userRoute)
+routes.use('/products', productRoute)
+routes.use('/orders', orderRoute)
 
-routes.get('/api', (_req: express.Request, res: express.Response) => {
+routes.get('/', (_req: express.Request, res: express.Response) => {
     res.send('api route !')
 })
 

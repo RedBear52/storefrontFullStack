@@ -2,17 +2,15 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const products_1 = require("../../handlers/products");
-const products_2 = require("../../handlers/products");
-const products_3 = require("../../handlers/products");
-const products_4 = require("../../handlers/products");
-const products_5 = require("../../handlers/products");
-const productRoute = express_1.default.Router();
+exports.__esModule = true;
+var express_1 = __importDefault(require("express"));
+var products_1 = require("../../handlers/products");
+var products_2 = require("../../handlers/products");
+var products_3 = require("../../handlers/products");
+var products_4 = require("../../handlers/products");
+var productRoute = express_1["default"].Router();
 productRoute.get('/', products_1.index);
 productRoute.get('/:id', products_2.show);
 productRoute.post('/', products_3.create);
-productRoute.get('/topFive', products_4.topFive);
-productRoute.get('/:category', products_5.category);
-exports.default = productRoute;
+productRoute.get('/category/:category', products_4.category);
+exports["default"] = productRoute;

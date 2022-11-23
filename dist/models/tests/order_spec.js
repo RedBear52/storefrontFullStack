@@ -2,11 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../order");
 const store = new order_1.OrderStore();
-const order = {
-    id: 1,
-    userId: 52,
-    orderStatus: 'Open'
-};
 describe('Order Table Model - Extant Method Checks', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
@@ -17,7 +12,7 @@ describe('Order Table Model - Extant Method Checks', () => {
     it('should have a create method', () => {
         expect(store.create).toBeDefined();
     });
-    it('should have a update method', () => {
+    it('should have an update method', () => {
         expect(store.update).toBeDefined();
     });
     it('should have a delete method', () => {
@@ -25,22 +20,22 @@ describe('Order Table Model - Extant Method Checks', () => {
     });
 });
 describe('Order Table Model - Method Implementation Checks', () => {
-    it('index method should return an array of orders', async () => {
+    it('index method should return array of orders', async () => {
         const result = await store.index();
         expect(result).toEqual([]);
     });
-    it('create method should generate new order', async () => {
-        const result = await store.create({
-            id: 1,
-            userId: 52,
-            orderStatus: 'open'
-        });
-        expect(result).toBeDefined();
+    it('1st show method test should return an UNDEFINED ERROR for expected order object', async () => {
+        const result = await store.show(1);
+        expect(result).toBeUndefined();
     });
-    // it('show method should return expected order object', async () => {
-    //     const result = await store.show(1)
-    //     expect(result).toBeDefined()
-    // })
+    it('create method should generate new order', async () => {
+        const result = await store.create(6, 'Open');
+        expect(result).toEqual({
+            id: 6,
+            userId: 2,
+            orderStatus: 'Open'
+        });
+    });
 });
 //   it('create method should add a book', async () => {
 //     const result = await store.create({

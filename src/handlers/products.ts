@@ -15,22 +15,15 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
     const newProduct = await store.create({
-        id: req.body.id,
         name: req.body.name,
         price: req.body.price,
         category: req.body.category
     })
     res.json(newProduct)
 }
-//  NEEDS BUILDING OUT ///
-export const topFive = async (req: Request, res: Response) => {
-    const topFiveProducts = await store.index()
-    res.json(topFiveProducts)
-}
 
 export const category = async (req: Request, res: Response) => {
-    const closedOrdersIndex = await store.show(parseInt(req.params.user_id))
-    res.json(closedOrdersIndex)
+    const selectedByCategory = await store.searchByCategory(req.params.category)
+    res.json(selectedByCategory)
 }
-//  NEEDS BUILDING OUT ///
 

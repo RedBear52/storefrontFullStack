@@ -9,10 +9,10 @@ const saltRounds = process.env.SALT_ROUNDS as string
 const pepper = process.env.BCRYPT_PASSWORD as string
 
 export type User = {
-    id: Number
-    first_name: String
-    last_name: String
-    password: String
+    id?: number
+    first_name: string
+    last_name: string
+    password: string
 }
 
 // export type userProduct = {
@@ -26,12 +26,11 @@ export class UserStore {
     async create(newUser: User): Promise<User> {
         try {
             const connection = await database.connect()
-            const sql = 'INSERT INTO users (id, first_name, last_name, password) VALUES ($1, $2, $3, $4) RETURNING * '
+            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING * '
 
             const hashedPassword = bcrypt.hashSync(newUser.password + pepper, parseInt(saltRounds))
 
             const result = await connection.query(sql, [
-                newUser.id,
                 newUser.first_name,
                 newUser.last_name,
                 hashedPassword
@@ -62,7 +61,6 @@ export class UserStore {
         return null
     }
 
-
     async index(): Promise<User[]> {
         try {
             const connection = await database.connect()
@@ -87,19 +85,17 @@ export class UserStore {
         }
     }
 
-
-
-    // async delete(id: number): Promise<User> {
-    //     try {
-    //         const connection = await database.connect()
-    //         const sql = 'DELETE FROM users WHERE id=($1)'
-    //         const result = await connection.query(sql, [id])
-    //         connection.release()
-    //         return result.rows[0]
-    //     } catch (err) {
-    //       throw new Error(`Unable to delete user ${id}: ${err}`)
-    //     }
-    // }
+    async delete(id: number): Promise<User> {
+        try {
+            const connection = await database.connect()
+            const sql = 'DELETE FROM users WHERE id=$1'
+            const result = await connection.query(sql, [id])
+            connection.release()
+            return result.rows[0]
+        } catch (err) {
+          throw new Error(`Unable to delete user ${id}: ${err}`)
+        }
+    }
 
     // async update(id: number, userStatus: string): Promise<User> {
     //     try {

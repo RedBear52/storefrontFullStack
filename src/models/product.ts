@@ -1,17 +1,17 @@
 import database from '../database'
 
 export type Product = {
-    id: Number
-    name: String
-    price: Number
-    category: String
+    id?: number
+    name: string
+    price: number
+    category: string
 }
 
 export type OrderProduct = {
-    id: Number
-    orderId: Number
-    productId: Number
-    quantity: Number
+    id?: number
+    orderId: number
+    productId: number
+    quantity: number
 }
 
 export default class ProductStore {
@@ -42,9 +42,9 @@ export default class ProductStore {
     async create(product: Product): Promise<Product> {
         try {
             const connection = await database.connect()
-            const sql = 'INSERT INTO products (id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING * '
+            const sql = 'INSERT INTO products (name, price, category) VALUES ($1, $2, $3) RETURNING * '
             const result = await connection.query(sql, [
-                product.id, product.name, product.price, product.category
+                product.name, product.price, product.category
             ])
             connection.release()
             return result.rows[0]
@@ -52,16 +52,16 @@ export default class ProductStore {
           throw new Error(`Unable to create product: ${err}`)
         }
     }
-
-    async delete(id: number): Promise<Product> {
+    
+    async topFiveProducts(): Promise<Product[]> {
         try {
             const connection = await database.connect()
-            const sql = 'DELETE FROM products WHERE id=$1 RETURNING *'
-            const result = await connection.query(sql, [id])
+            const sql = 'SELECT * FROM products'
+            const result = await connection.query(sql)
             connection.release()
-            return result.rows[0]
+            return result.rows
         } catch (err) {
-          throw new Error(`Unable to delete product ${id}: ${err}`)
+          throw new Error(`Cannot find top 5 product index: ${err}`)
         }
     }
 
@@ -74,6 +74,18 @@ export default class ProductStore {
             return result.rows[0]
         } catch (err) {
           throw new Error(`Unable to update product ${product.id}: ${err}`)
+        }
+    }
+
+    async searchByCategory (category: string): Promise<Product[]> {
+        try {
+            const connection = await database.connect()
+            const sql = 'SELECT * FROM products WHERE category=$1'
+            const result = await connection.query(sql, [category])
+            connection.release()
+            return result.rows
+        } catch (err) {
+          throw new Error(`Unable to find products by category: ${category}: ${err}`)
         }
     }
 }

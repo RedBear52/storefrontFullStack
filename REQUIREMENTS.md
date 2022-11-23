@@ -8,7 +8,6 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Index `'/products' [GET]`
 - Show  (args: id) `'/products/:id' [GET]`
 - Create [token required] (args: Product obj) `'/products' [POST]`
-- Top 5 most popular products `'/products/top_five' [GET]`
 - Products by category (args: category) `'/products/:category' [GET]`
 
 #### Users

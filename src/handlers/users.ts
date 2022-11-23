@@ -18,14 +18,18 @@ export const show = async (req: Request, res: Response) => {
 }
 
 export const create = async (req: Request, res: Response) => {
+    
     const newUser = await store.create({
-        id: req.body.id,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        // password here???   or just a token???
         password: req.body.password
-        // password here???   or just a token???
     })
     res.json(newUser)
+}
+    
+export const remove = async (req: Request, res: Response) => {
+    
+    const deletedUser = await store.delete(parseInt(req.params.id))
+    res.json(deletedUser)
 }
 

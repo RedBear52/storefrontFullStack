@@ -29,7 +29,7 @@ export class OrderStore {
     async show(id: number): Promise<Order> {
         try {
             const connection = await database.connect()
-            const sql = 'SELECT * FROM orders WHERE id=($1)'
+            const sql = 'SELECT * FROM orders WHERE id=$1'
             const result = await connection.query(sql, [id])
             connection.release()
             return result.rows[0]
@@ -38,11 +38,11 @@ export class OrderStore {
         }
     }
 
-    async create(order: Order): Promise<Order> {
+    async create(userId: number, orderStatus: string): Promise<Order> {
         try {
             const connection = await database.connect()
-            const sql = 'INSERT INTO orders (id, userId, orderStatus) VALUES ($1, $2, $3) RETURNING * '
-            const result = await connection.query(sql, [order.id, order.userId, order.orderStatus])
+            const sql = 'INSERT INTO orders (userId, orderStatus) VALUES ($1, $2) RETURNING * '
+            const result = await connection.query(sql, [userId, orderStatus])
             connection.release()
             return result.rows[0]
         } catch (err) {
