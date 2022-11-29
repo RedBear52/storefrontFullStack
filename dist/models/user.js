@@ -84,23 +84,23 @@ var UserStore = /** @class */ (function () {
             });
         });
     };
-    UserStore.prototype.authenticateUser = function (id, password) {
+    UserStore.prototype.authenticateUser = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, user;
+            var connection, sql, result, user_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
                         sql = 'SELECT password FROM users WHERE id=$1';
-                        return [4 /*yield*/, connection.query(sql, [id, password])];
+                        return [4 /*yield*/, connection.query(sql, [user.id])];
                     case 2:
                         result = _a.sent();
                         if (result.rows.length) {
-                            user = result.rows[0];
-                            console.log(user);
-                            if (bcrypt_1["default"].compareSync(password + pepper, user.password)) {
-                                return [2 /*return*/, user];
+                            user_1 = result.rows[0];
+                            console.log(user_1);
+                            if (bcrypt_1["default"].compareSync(user_1.password + pepper, user_1.password)) {
+                                return [2 /*return*/, user_1];
                             }
                         }
                         return [2 /*return*/, null];
@@ -142,7 +142,7 @@ var UserStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT * FROM users WHERE id=($1)';
+                        sql = 'SELECT * FROM users WHERE id=$1';
                         return [4 /*yield*/, connection.query(sql, [id])];
                     case 2:
                         result = _a.sent();

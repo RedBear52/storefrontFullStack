@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.closedOrders = exports.openOrders = exports.index = void 0;
+exports.closedOrders = exports.openOrders = exports.create = exports.index = void 0;
 var order_1 = require("../models/order");
 var store = new order_1.OrderStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -52,6 +52,19 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 exports.index = index;
+var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newOrderInfo;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, store.create(req.body.userId, req.body.orderStatus)];
+            case 1:
+                newOrderInfo = _a.sent();
+                res.json(newOrderInfo);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.create = create;
 var openOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var openOrdersIndex;
     return __generator(this, function (_a) {

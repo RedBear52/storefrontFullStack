@@ -8,6 +8,14 @@ export const index = async (_req: Request, res: Response) => {
     res.json(ordersIndex)
 }
 
+export const create = async (req: Request, res: Response) => {
+    const newOrderInfo = await store.create(
+        req.body.userId,
+        req.body.orderStatus
+    )
+    res.json(newOrderInfo)
+}
+
 export const openOrders = async (req: Request, res: Response) => {
     const openOrdersIndex = await store.show(parseInt(req.params.user_id))
     res.json(openOrdersIndex)

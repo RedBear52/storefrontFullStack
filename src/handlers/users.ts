@@ -33,3 +33,6 @@ export const remove = async (req: Request, res: Response) => {
     res.json(deletedUser)
 }
 
+export const authenticate = async (req: Request, res: Response) => {
+
+}
