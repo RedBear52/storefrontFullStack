@@ -35,28 +35,37 @@ export class UserStore {
                 newUser.last_name,
                 hashedPassword
                 ])
+            const user =  result.rows[0]
+
             connection.release()
-            return result.rows[0]
+            return user
         } catch (err) {
-            throw new Error(`Unable to create newUser: ${err}`)
+            throw new Error(
+            `Unable to create newUser [${newUser.first_name} ${newUser.last_name}]:  ${err}`
+            )
         }
     }
 
-    async authenticateUser(user: User): Promise<User | null> {
+    async authenticateUser(user: User)  : Promise<User | null> {
         const connection = await database.connect()
         const sql = 'SELECT password FROM users WHERE id=$1'
         const result = await connection.query(sql, [user.id])
+        connection.release()
+        if (result.rows.length === 0) {
+            throw new Error('Could not find requested user')
+        }
 
-        if (result.rows.length) {
-            const user = result.rows[0]
-            console.log(user)
+        const userQuery = result.rows[0]
 
-            if (bcrypt.compareSync(user.password + pepper, user.password)) {
-                return user
-            }
+        if(await bcrypt.compare(
+            user.password + pepper,
+            userQuery.hashedPassword
+        )) {
+
         }
         return null
     }
+     
 
     async index(): Promise<User[]> {
         try {

@@ -57,7 +57,7 @@ var UserStore = /** @class */ (function () {
     }
     UserStore.prototype.create = function (newUser) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, hashedPassword, result, err_1;
+            var connection, sql, hashedPassword, result, user, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -74,11 +74,12 @@ var UserStore = /** @class */ (function () {
                             ])];
                     case 2:
                         result = _a.sent();
+                        user = result.rows[0];
                         connection.release();
-                        return [2 /*return*/, result.rows[0]];
+                        return [2 /*return*/, user];
                     case 3:
                         err_1 = _a.sent();
-                        throw new Error("Unable to create newUser: ".concat(err_1));
+                        throw new Error("Unable to create newUser [".concat(newUser.first_name, " ").concat(newUser.last_name, "]:  ").concat(err_1));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -86,7 +87,7 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype.authenticateUser = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, user_1;
+            var connection, sql, result, userQuery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
@@ -96,12 +97,14 @@ var UserStore = /** @class */ (function () {
                         return [4 /*yield*/, connection.query(sql, [user.id])];
                     case 2:
                         result = _a.sent();
-                        if (result.rows.length) {
-                            user_1 = result.rows[0];
-                            console.log(user_1);
-                            if (bcrypt_1["default"].compareSync(user_1.password + pepper, user_1.password)) {
-                                return [2 /*return*/, user_1];
-                            }
+                        connection.release();
+                        if (result.rows.length === 0) {
+                            throw new Error('Could not find requested user');
+                        }
+                        userQuery = result.rows[0];
+                        return [4 /*yield*/, bcrypt_1["default"].compare(user.password + pepper, userQuery.hashedPassword)];
+                    case 3:
+                        if (_a.sent()) {
                         }
                         return [2 /*return*/, null];
                 }
