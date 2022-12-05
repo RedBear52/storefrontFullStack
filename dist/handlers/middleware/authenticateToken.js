@@ -39,62 +39,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.category = exports.create = exports.show = exports.index = void 0;
-var product_1 = __importDefault(require("../models/product"));
-var store = new product_1["default"]();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var productIndex;
+exports.authenticateToken = void 0;
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tokenSecret = process.env.TOKEN_SECRET;
+var authenticateToken = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var authorizationHeader, token;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.index()];
-            case 1:
-                productIndex = _a.sent();
-                res.json(productIndex);
-                return [2 /*return*/];
+        try {
+            authorizationHeader = req.headers.authorization;
+            token = authorizationHeader + 'bootie';
+            console.log(token);
+            jsonwebtoken_1["default"].verify(token, tokenSecret);
+            res.json();
+            next();
         }
+        catch (error) {
+            res.status(401);
+            res.send("Token authentication failed:  ".concat(error));
+        }
+        return [2 /*return*/];
     });
 }); };
-exports.index = index;
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var requestedProduct;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(parseInt(req.params.id))];
-            case 1:
-                requestedProduct = _a.sent();
-                res.json(requestedProduct);
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.show = show;
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newProduct;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.create({
-                    name: req.body.name,
-                    price: req.body.price,
-                    category: req.body.category
-                })];
-            case 1:
-                newProduct = _a.sent();
-                res.json(newProduct);
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.create = create;
-var category = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var selectedByCategory;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, store.searchByCategory(req.params.category)];
-            case 1:
-                selectedByCategory = _a.sent();
-                res.json(selectedByCategory);
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.category = category;
+exports.authenticateToken = authenticateToken;

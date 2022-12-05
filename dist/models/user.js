@@ -46,6 +46,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1["default"].config();
 var saltRounds = process.env.SALT_ROUNDS;
 var pepper = process.env.BCRYPT_PASSWORD;
+var tokenSecret = process.env.TOKEN_SECRET;
 // export type userProduct = {
 //     id: Number
 //     userId: Number
@@ -57,7 +58,7 @@ var UserStore = /** @class */ (function () {
     }
     UserStore.prototype.create = function (newUser) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, hashedPassword, result, user, err_1;
+            var connection, sql, hashedPassword, result, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -71,12 +72,14 @@ var UserStore = /** @class */ (function () {
                                 newUser.first_name,
                                 newUser.last_name,
                                 hashedPassword
-                            ])];
+                            ])
+                            // const user =  
+                        ];
                     case 2:
                         result = _a.sent();
-                        user = result.rows[0];
+                        // const user =  
                         connection.release();
-                        return [2 /*return*/, user];
+                        return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_1 = _a.sent();
                         throw new Error("Unable to create newUser [".concat(newUser.first_name, " ").concat(newUser.last_name, "]:  ").concat(err_1));
@@ -87,33 +90,47 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype.authenticateUser = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, userQuery;
+            var connection, sql, result, queriedUser, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         connection = _a.sent();
-                        sql = 'SELECT password FROM users WHERE id=$1';
-                        return [4 /*yield*/, connection.query(sql, [user.id])];
+                        _a.label = 2;
                     case 2:
-                        result = _a.sent();
-                        connection.release();
-                        if (result.rows.length === 0) {
-                            throw new Error('Could not find requested user');
-                        }
-                        userQuery = result.rows[0];
-                        return [4 /*yield*/, bcrypt_1["default"].compare(user.password + pepper, userQuery.hashedPassword)];
+                        _a.trys.push([2, 4, , 5]);
+                        sql = 'SELECT * FROM users WHERE id=$1';
+                        return [4 /*yield*/, connection.query(sql, [user.id])];
                     case 3:
-                        if (_a.sent()) {
+                        result = _a.sent();
+                        console.log(user.password + pepper);
+                        if (result.rows.length) {
+                            queriedUser = result.rows[0];
+                            console.log(queriedUser);
+                            if (bcrypt_1["default"].compareSync(user.password + pepper, queriedUser.password)) {
+                                return [2 /*return*/, queriedUser];
+                            }
+                            else {
+                                throw new Error('User validation unsuccessful');
+                            }
                         }
-                        return [2 /*return*/, null];
+                        else {
+                            throw new Error('Unable to locate queried user');
+                        }
+                        return [3 /*break*/, 5];
+                    case 4:
+                        err_2 = _a.sent();
+                        connection.release();
+                        console.log('Validation failed: ', err_2);
+                        throw err_2;
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     UserStore.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, err_2;
+            var connection, sql, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -128,8 +145,8 @@ var UserStore = /** @class */ (function () {
                         connection.release();
                         return [2 /*return*/, result.rows];
                     case 3:
-                        err_2 = _a.sent();
-                        throw new Error("Cannot find requested user index: ".concat(err_2));
+                        err_3 = _a.sent();
+                        throw new Error("Cannot find requested user index: ".concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -137,7 +154,7 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype.show = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, err_3;
+            var connection, sql, result, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -152,8 +169,8 @@ var UserStore = /** @class */ (function () {
                         connection.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("Cannot find user ".concat(id, ": ").concat(err_3));
+                        err_4 = _a.sent();
+                        throw new Error("Cannot find user ".concat(id, ": ").concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -161,7 +178,7 @@ var UserStore = /** @class */ (function () {
     };
     UserStore.prototype["delete"] = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var connection, sql, result, err_4;
+            var connection, sql, result, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -176,8 +193,8 @@ var UserStore = /** @class */ (function () {
                         connection.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_4 = _a.sent();
-                        throw new Error("Unable to delete user ".concat(id, ": ").concat(err_4));
+                        err_5 = _a.sent();
+                        throw new Error("Unable to delete user ".concat(id, ": ").concat(err_5));
                     case 4: return [2 /*return*/];
                 }
             });

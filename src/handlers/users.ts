@@ -1,5 +1,8 @@
-import {Request, Response} from 'express'
-import { UserStore } from '../models/user'
+import { Request, Response } from 'express'
+import { UserStore, User } from '../models/user'
+import jwt from 'jsonwebtoken'
+
+const tokenSecret = process.env.TOKEN_SECRET as unknown as string
 
 const store = new UserStore()
 
@@ -19,12 +22,14 @@ export const show = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
     
-    const newUser = await store.create({
+    const user: User = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         password: req.body.password
-    })
-    res.json(newUser)
+    }
+      const newUser = await store.create(user)
+      const token = jwt.sign({user: newUser}, tokenSecret)
+      res.json(token )
 }
     
 export const remove = async (req: Request, res: Response) => {
@@ -34,5 +39,19 @@ export const remove = async (req: Request, res: Response) => {
 }
 
 export const authenticate = async (req: Request, res: Response) => {
-
+    try {
+      const userReq = req.body as User
+      const userInfo = await store.authenticateUser(userReq)
+      if (userInfo) {
+        const token = jwt.sign(userInfo, tokenSecret)
+        
+        res.status(200).json(token)
+      } else {
+        res.status(400).json({ error: 'User was not authenticated' })
+      }
+    } catch (err) {
+      res.status(500).json({ error: `Could not authenticate user: ${err}` })
+    }
+    
 }
+  
