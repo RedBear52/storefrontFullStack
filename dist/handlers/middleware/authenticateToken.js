@@ -43,14 +43,15 @@ exports.authenticateToken = void 0;
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var tokenSecret = process.env.TOKEN_SECRET;
 var authenticateToken = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var authorizationHeader, token;
+    var authorizationHeader, token, verifiedToken;
     return __generator(this, function (_a) {
         try {
             authorizationHeader = req.headers.authorization;
-            token = authorizationHeader + 'bootie';
+            token = authorizationHeader.slice(7);
             console.log(token);
-            jsonwebtoken_1["default"].verify(token, tokenSecret);
-            res.json();
+            verifiedToken = jsonwebtoken_1["default"].verify(token, tokenSecret);
+            res.locals.users = verifiedToken;
+            console.log(res.locals);
             next();
         }
         catch (error) {

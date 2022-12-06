@@ -1,21 +1,23 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import { UserStore, User } from '../../models/user'
-
 
 const tokenSecret = process.env.TOKEN_SECRET as string
 
 export const authenticateToken = async (
-    req: express.Request, res: express.Response, next: express.NextFunction
+    req: express.Request, 
+    res: express.Response, 
+    next: express.NextFunction
 ) => {
     try {
-        const authorizationHeader = req.headers.authorization as unknown
+        const authorizationHeader = req.headers.authorization as string
         
-        const token = authorizationHeader + 'bootie'
+        const token = authorizationHeader.slice(7)
         console.log(token)
 
-        jwt.verify(token, tokenSecret)
-        res.json()
+        const verifiedToken = jwt.verify(token, tokenSecret)
+        res.locals.users = verifiedToken
+        console.log(res.locals)
+
         next()
     } catch (error) {
         res.status(401)

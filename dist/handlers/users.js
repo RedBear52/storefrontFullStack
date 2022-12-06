@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.authenticate = exports.remove = exports.create = exports.show = exports.index = void 0;
+exports.authenticateUser = exports.remove = exports.create = exports.show = exports.index = void 0;
 var user_1 = require("../models/user");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var tokenSecret = process.env.TOKEN_SECRET;
@@ -107,7 +107,7 @@ var remove = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 exports.remove = remove;
-var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userReq, userInfo, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -133,4 +133,4 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); };
-exports.authenticate = authenticate;
+exports.authenticateUser = authenticateUser;

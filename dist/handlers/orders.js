@@ -85,6 +85,7 @@ var closedOrders = function (req, res) { return __awaiter(void 0, void 0, void 0
             case 0: return [4 /*yield*/, store.show(parseInt(req.params.user_id))];
             case 1:
                 closedOrdersIndex = _a.sent();
+                console.log(closedOrdersIndex);
                 res.json(closedOrdersIndex);
                 return [2 /*return*/];
         }
