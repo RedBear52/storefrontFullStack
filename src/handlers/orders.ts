@@ -42,12 +42,12 @@ export const update = async (req: Request, res: Response) => {
 }
 
 export const openOrders = async (req: Request, res: Response) => {
-    const openOrdersIndex = await store.show(parseInt(req.params.user_id))
+    const openOrdersIndex = await store.showOpenOrders(parseInt(req.params.user_id))
     res.json(openOrdersIndex)
 }
 
 export const closedOrders = async (req: Request, res: Response) => {
-    const closedOrdersIndex = await store.show(parseInt(req.params.user_id))
+    const closedOrdersIndex = await store.showClosedOrders(parseInt(req.params.user_id))
     console.log(closedOrdersIndex)
     res.json(closedOrdersIndex)
 }

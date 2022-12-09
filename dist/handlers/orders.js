@@ -116,7 +116,7 @@ var openOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     var openOrdersIndex;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(parseInt(req.params.user_id))];
+            case 0: return [4 /*yield*/, store.showOpenOrders(parseInt(req.params.user_id))];
             case 1:
                 openOrdersIndex = _a.sent();
                 res.json(openOrdersIndex);
@@ -129,7 +129,7 @@ var closedOrders = function (req, res) { return __awaiter(void 0, void 0, void 0
     var closedOrdersIndex;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, store.show(parseInt(req.params.user_id))];
+            case 0: return [4 /*yield*/, store.showClosedOrders(parseInt(req.params.user_id))];
             case 1:
                 closedOrdersIndex = _a.sent();
                 console.log(closedOrdersIndex);

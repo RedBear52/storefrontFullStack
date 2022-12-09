@@ -1,3 +1,4 @@
+import { Connection } from 'pg'
 import database from '../database'
 import { addProduct } from '../handlers/orders'
 
@@ -89,5 +90,31 @@ export class OrderStore {
         } catch (error) {
             throw new Error(`Could not add product: ${orderProd.productId}  to  order: ${orderProd.orderId}`)
         }
+    }
+
+    async showOpenOrders(userId: number): Promise<Order[]> {
+        try {
+            const connection = await database.connect()
+            const sql = `SELECT * FROM orders WHERE userid = $1 AND orderstatus = 'open'`
+            const result = await connection.query(sql, [userId])
+            connection.release()
+
+            return result.rows
+        } catch {
+            throw new Error(`Could not find any open orders for user with id of: ${userId}`)
+        }
+    }
+
+    async showClosedOrders(userId: number): Promise<Order[]> {
+        try {
+            const connection = await database.connect()
+            const sql = `SELECT * FROM orders WHERE userid = $1 AND orderstatus = 'completed'`
+            const result = await connection.query(sql, [userId])
+            connection.release()
+
+            return result.rows
+        } catch {
+            throw new Error(`Could not find any completed orders for user with id of: ${userId}`)
+        }        
     }
 }

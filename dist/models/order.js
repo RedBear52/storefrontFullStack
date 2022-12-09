@@ -190,6 +190,54 @@ var OrderStore = /** @class */ (function () {
             });
         });
     };
+    OrderStore.prototype.showOpenOrders = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        connection = _b.sent();
+                        sql = "SELECT * FROM orders WHERE userid = $1 AND orderstatus = 'open'";
+                        return [4 /*yield*/, connection.query(sql, [userId])];
+                    case 2:
+                        result = _b.sent();
+                        connection.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        _a = _b.sent();
+                        throw new Error("Could not find any open orders for user with id of: ".concat(userId));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    OrderStore.prototype.showClosedOrders = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connection, sql, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        connection = _b.sent();
+                        sql = "SELECT * FROM orders WHERE userid = $1 AND orderstatus = 'completed'";
+                        return [4 /*yield*/, connection.query(sql, [userId])];
+                    case 2:
+                        result = _b.sent();
+                        connection.release();
+                        return [2 /*return*/, result.rows];
+                    case 3:
+                        _a = _b.sent();
+                        throw new Error("Could not find any completed orders for user with id of: ".concat(userId));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return OrderStore;
 }());
 exports.OrderStore = OrderStore;
