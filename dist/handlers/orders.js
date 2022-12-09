@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.closedOrders = exports.openOrders = exports.create = exports.index = void 0;
+exports.closedOrders = exports.openOrders = exports.update = exports.addProduct = exports.create = exports.show = exports.index = void 0;
 var order_1 = require("../models/order");
 var store = new order_1.OrderStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -52,6 +52,19 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 exports.index = index;
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderShow;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, store.show(parseInt(req.params.id))];
+            case 1:
+                orderShow = _a.sent();
+                res.json(orderShow);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.show = show;
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var newOrderInfo;
     return __generator(this, function (_a) {
@@ -65,6 +78,40 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 exports.create = create;
+var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderId, orderProd, newOrderProd, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                orderId = req.params.id;
+                orderProd = req.body;
+                return [4 /*yield*/, store.addProduct(orderProd, parseInt(orderId))];
+            case 1:
+                newOrderProd = _a.sent();
+                res.json(newOrderProd);
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                throw new Error("Could not add order/product: ".concat(error_1));
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.addProduct = addProduct;
+var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var updatedOrder;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, store.update(req.body.orderStatus, req.body.id)];
+            case 1:
+                updatedOrder = _a.sent();
+                res.json(updatedOrder);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.update = update;
 var openOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var openOrdersIndex;
     return __generator(this, function (_a) {

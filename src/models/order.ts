@@ -1,7 +1,8 @@
 import database from '../database'
+import { addProduct } from '../handlers/orders'
 
 export type Order = {
-    id: number
+    id?: number
     userId: number
     orderStatus: string
 }
@@ -71,6 +72,22 @@ export class OrderStore {
             return result.rows[0]
         } catch (err) {
           throw new Error(`Unable to update status of order ${id} to ${orderStatus}: ${err}`)
+        }
+    }
+
+    async addProduct(orderProd: OrderProduct, orderId: number): Promise<OrderProduct> {
+        try {
+            const connection = await database.connect()
+            const sql = 'INSERT INTO order_products (quantity, orderid, productid) VALUES ($1, $2, $3) RETURNING * '
+            
+            const result = await connection.query(sql, [orderProd.quantity, orderId, orderProd.productId])
+            connection.release()
+
+            const order = result.rows[0]
+            console.log(order)
+            return order
+        } catch (error) {
+            throw new Error(`Could not add product: ${orderProd.productId}  to  order: ${orderProd.orderId}`)
         }
     }
 }
