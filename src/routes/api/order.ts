@@ -14,8 +14,8 @@ orderRoute.get('/', index)
 orderRoute.get('/:id', show)
 orderRoute.post('/', create)
 orderRoute.put('/:id', update)
-orderRoute.get('/open/:user_id', openOrders)
-orderRoute.get('/closed/:user_id', closedOrders)
+orderRoute.get('/open/:user_id', authenticateToken, openOrders)
+orderRoute.get('/closed/:user_id', authenticateToken, closedOrders)
 orderRoute.post('/:id/products', authenticateToken, addProduct)
 
 export default orderRoute
