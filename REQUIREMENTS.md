@@ -13,11 +13,19 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Users
 - Index [token required] `'/users' [GET]`
 - Show [token required] (args: id)  `'/users/:id [GET]`
-- Create New User [token required] (args: User obj) `'/users [POST]`
+- Create New User [generate token] (args: User obj) `'/users [POST]`
+- Authenticate New User [token required] (args: User obj) `'/users/authenticate [POST]`
+- [OPTIONAL] Delete User [token required] (args: id) `'/users/:id [DELETE]'`
 
 #### Orders
 - Current Order by user (args: user id)[token required] `'orders/open/:user_id' [GET]`
 - Completed Orders by user (args: user id)[token required] `'orders/closed/:user_id' [GET]`
+
+- [OPTIONAL] Show Index of Orders `'/orders' [GET]` 
+- [OPTIONAL] Show Order (args: id) `'/orders/:id' [GET]` 
+- [OPTIONAL] Create Order `'/orders' [POST]` 
+- [OPTIONAL] Update Order (args: id) `'/orders/:id' [PUT]` 
+- [OPTIONAL] Add Product to Order (args: id) [token required] `'/orders/:id/products' [POST]` 
 
 ## Data Shapes
 #### Product

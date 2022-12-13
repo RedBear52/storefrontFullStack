@@ -4,5 +4,5 @@ CREATE TABLE order_products (
     FOREIGN KEY (orderId) REFERENCES orders (id), 
     productId INT, 
     FOREIGN KEY (productId) REFERENCES products (id), 
-    quantity INT NOT NULL default (1)
+    quantity INT NOT NULL 
     );
