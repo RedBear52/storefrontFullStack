@@ -10,7 +10,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const saltRounds = process.env.SALT_ROUNDS;
 const pepper = process.env.BCRYPT_PASSWORD;
-const tokenSecret = process.env.TOKEN_SECRET;
 // export type userProduct = {
 //     id: Number
 //     userId: Number
@@ -28,9 +27,9 @@ class UserStore {
                 newUser.last_name,
                 hashedPassword
             ]);
-            // const user =  
+            const user = result.rows[0];
             connection.release();
-            return result.rows[0];
+            return user;
         }
         catch (err) {
             throw new Error(`Unable to create newUser [${newUser.first_name} ${newUser.last_name}]:  ${err}`);
@@ -38,29 +37,17 @@ class UserStore {
     }
     async authenticateUser(user) {
         const connection = await database_1.default.connect();
-        try {
-            const sql = 'SELECT * FROM users WHERE id=$1';
-            const result = await connection.query(sql, [user.id]);
-            console.log(user.password + pepper);
-            if (result.rows.length) {
-                const queriedUser = result.rows[0];
-                console.log(queriedUser);
-                if (bcrypt_1.default.compareSync(user.password + pepper, queriedUser.password)) {
-                    return queriedUser;
-                }
-                else {
-                    throw new Error('User validation unsuccessful');
-                }
-            }
-            else {
-                throw new Error('Unable to locate queried user');
-            }
+        const sql = 'SELECT password FROM users WHERE id=$1';
+        const result = await connection.query(sql, [user.id]);
+        connection.release();
+        if (result.rows.length === 0) {
+            throw new Error('Could not find requested user');
         }
-        catch (err) {
-            connection.release();
-            console.log('Validation failed: ', err);
-            throw err;
+        const userQuery = result.rows[0];
+        if (await bcrypt_1.default.compare(user.password + pepper, userQuery.hashedPassword)) {
+            return user;
         }
+        return null;
     }
     async index() {
         try {

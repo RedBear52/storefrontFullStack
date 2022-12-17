@@ -2,19 +2,17 @@ import database from '../database'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import { isConstructorDeclaration } from 'typescript'
 
 dotenv.config()
 
 const saltRounds = process.env.SALT_ROUNDS as string
 const pepper = process.env.BCRYPT_PASSWORD as string
-const tokenSecret = process.env.TOKEN_SECRET as string
 
 export type User = {
     id?: number
-    first_name?: string
-    last_name?: string
-    password?: string
+    first_name: string
+    last_name: string
+    password: string
 }
 
 // export type userProduct = {
@@ -37,10 +35,10 @@ export class UserStore {
                 newUser.last_name,
                 hashedPassword
                 ])
-            // const user =  
+            const user =  result.rows[0]
 
             connection.release()
-            return result.rows[0]
+            return user
         } catch (err) {
             throw new Error(
             `Unable to create newUser [${newUser.first_name} ${newUser.last_name}]:  ${err}`
@@ -48,36 +46,24 @@ export class UserStore {
         }
     }
 
-    async authenticateUser(user: User): Promise<User | null> {
+    async authenticateUser(user: User)  : Promise<User | null> {
         const connection = await database.connect()
-        try {
-            const sql = 'SELECT * FROM users WHERE id=$1'
-            const result = await connection.query(sql, [user.id])
-
-            console.log(user.password+pepper)
-
-            if (result.rows.length) {
-                const queriedUser = result.rows[0]
-                console.log(queriedUser)
-
-                if (
-                    bcrypt.compareSync(user.password + pepper, queriedUser.password)
-                ) {
-
-                    return queriedUser
-
-                } else {
-                    throw new Error('User validation unsuccessful')
-                }
-            } else {
-                throw new Error('Unable to locate queried user')
-            }
-        } catch (err) {
-            connection.release()
-
-            console.log('Validation failed: ', err)
-            throw err
+        const sql = 'SELECT password FROM users WHERE id=$1'
+        const result = await connection.query(sql, [user.id])
+        connection.release()
+        if (result.rows.length === 0) {
+            throw new Error('Could not find requested user')
         }
+
+        const userQuery = result.rows[0]
+
+        if(await bcrypt.compare(
+            user.password + pepper,
+            userQuery.hashedPassword
+        )) {
+            return user
+        }
+        return null
     }
 
     async index(): Promise<User[]> {

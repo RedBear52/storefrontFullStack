@@ -7,21 +7,27 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const pg_1 = require("pg");
 dotenv_1.default.config();
 const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_TEST_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_TEST_PASSWORD, POSTGRES_TEST_USER, ENV } = process.env;
-let database;
+let database = new pg_1.Pool;
 if (ENV === 'test') {
     database = new pg_1.Pool({
+        port: 6543,
         host: POSTGRES_HOST,
         database: POSTGRES_TEST_DB,
         user: POSTGRES_TEST_USER,
         password: POSTGRES_TEST_PASSWORD
     });
 }
-else {
+else if (ENV === 'dev') {
     database = new pg_1.Pool({
+        port: 6543,
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
         user: POSTGRES_USER,
         password: POSTGRES_PASSWORD
     });
 }
+else {
+    console.log('man...something went way wrong...');
+}
+console.log(ENV);
 exports.default = database;
