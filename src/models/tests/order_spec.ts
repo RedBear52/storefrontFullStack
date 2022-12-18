@@ -1,60 +1,52 @@
 import {Order, OrderStore} from '../order'
-import ProductStore from '../product'
+import ProductStore, { Product } from '../product'
 import {User, UserStore} from '../user'
-import {Product} from '../product'
+import { testProduct } from './product_spec'
+import { testUser } from './user_spec'
 
-const order_store = new OrderStore()
-const order: Order = {
+const testOrderStore = new OrderStore()
+
+export const order: Order = {
     userId: 1,
     orderStatus: 'open'
 }
 
 describe('Order Table Model - Extant Method Checks', () => {
     it('should have an index method', () => {
-        expect(order_store.index).toBeDefined()
+        expect(testOrderStore.index).toBeDefined()
     })
 
     it('should have a show method', () => {
-    expect(order_store.show).toBeDefined();
+    expect(testOrderStore.show).toBeDefined();
     });
 
     it('should have a create method', () => {
-    expect(order_store.create).toBeDefined();
+    expect(testOrderStore.create).toBeDefined();
     });
 
     it('should have an update method', () => {
-    expect(order_store.update).toBeDefined();
+    expect(testOrderStore.update).toBeDefined();
     });
 
     it('should have a delete method', () => {
-    expect(order_store.delete).toBeDefined();
+    expect(testOrderStore.delete).toBeDefined();
     });
 })
 
 describe('Order Table Model - Method Implementation Checks', () => {
-    const test_user = {
-        last_name: 'Mocco',
-        first_name: 'Peyton',
-        password: 'password'
-    }
+    
 
-    const test_product = {
-        name: 'boot straps',
-        price: 52,
-        category: 'cure alls'
-    }
-
-    const test_userStore = new UserStore()
-    const test_productStore = new ProductStore()
+    const testUserStore = new UserStore()
+    const testProductStore = new ProductStore()
     
     // beforeAll(async () => {
     //     await test_userStore.create(test_user)
-    //     await test_productStore.create(test_product)
+    //     await testProductStore.create(testProduct)
     //     })
-    it('index method should return array of orders', async () => {
-        const result = await order_store.index()
-        expect(result).toEqual([])
-    })
+    // it('index method should return array of orders', async () => {
+    //     const result = await testOrderStore.index()
+    //     expect(result).toEqual([])
+    // })
 
     // it('1st show method test should return an UNDEFINED ERROR for expected order object', async () => {
     //     const result = await store.show(1)
@@ -62,13 +54,13 @@ describe('Order Table Model - Method Implementation Checks', () => {
     // })
 
     // it('should create new order', async () => {
-    //     const result = await order_store.create(order.userId, order.orderStatus)
+    //     const result = await testOrderStore.create(order.userId, order.orderStatus)
     //     expect(result).toEqual({
     //         id: 1,
     //         userId: 1,
     //         orderStatus: 'Open'
     //     })
-//     })
+    // })
 // })
 
 //   it('create method should add a book', async () => {

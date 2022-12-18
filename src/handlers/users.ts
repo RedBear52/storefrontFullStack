@@ -29,7 +29,7 @@ export const create = async (req: Request, res: Response) => {
     }
       const newUser = await store.create(user)
       const token = jwt.sign({user: newUser}, tokenSecret)
-      res.json(token )
+      res.json(token)
 }
     
 export const remove = async (req: Request, res: Response) => {

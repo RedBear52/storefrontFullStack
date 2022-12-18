@@ -43,30 +43,28 @@ class ProductStore {
             throw new Error(`Unable to create product: ${err}`);
         }
     }
-    async topFiveProducts() {
-        try {
-            const connection = await database_1.default.connect();
-            const sql = 'SELECT * FROM products';
-            const result = await connection.query(sql);
-            connection.release();
-            return result.rows;
-        }
-        catch (err) {
-            throw new Error(`Cannot find top 5 product index: ${err}`);
-        }
-    }
-    async update(product) {
-        try {
-            const connection = await database_1.default.connect();
-            const sql = 'UPDATE products SET name=$2, price=$3, category=$4 WHERE id=$1 RETURNING *';
-            const result = await connection.query(sql, [product.id, product.name, product.price, product.category]);
-            connection.release();
-            return result.rows[0];
-        }
-        catch (err) {
-            throw new Error(`Unable to update product ${product.id}: ${err}`);
-        }
-    }
+    // async topFiveProducts(): Promise<Product[]> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'SELECT * FROM products'
+    //         const result = await connection.query(sql)
+    //         connection.release()
+    //         return result.rows
+    //     } catch (err) {
+    //       throw new Error(`Cannot find top 5 product index: ${err}`)
+    //     }
+    // }
+    // async update(product: Product): Promise<Product> {
+    //     try {
+    //         const connection = await database.connect()
+    //         const sql = 'UPDATE products SET name=$2, price=$3, category=$4 WHERE id=$1 RETURNING *'
+    //         const result = await connection.query(sql, [product.id, product.name, product.price, product.category])
+    //         connection.release()
+    //         return result.rows[0]
+    //     } catch (err) {
+    //       throw new Error(`Unable to update product ${product.id}: ${err}`)
+    //     }
+    // }
     async searchByCategory(category) {
         try {
             const connection = await database_1.default.connect();
