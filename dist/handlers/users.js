@@ -23,14 +23,19 @@ const show = async (req, res) => {
 };
 exports.show = show;
 const create = async (req, res) => {
-    const user = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        password: req.body.password
-    };
-    const newUser = await store.create(user);
-    const token = jsonwebtoken_1.default.sign({ user: newUser }, tokenSecret);
-    res.json(token);
+    try {
+        const user = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            password: req.body.password
+        };
+        const newUser = await store.create(user);
+        const token = jsonwebtoken_1.default.sign({ user: newUser }, tokenSecret);
+        res.json(token);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'User could not be created' });
+    }
 };
 exports.create = create;
 const remove = async (req, res) => {

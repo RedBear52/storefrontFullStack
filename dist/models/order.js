@@ -30,6 +30,18 @@ class OrderStore {
             throw new Error(`Cannot find order ${id}: ${err}`);
         }
     }
+    async testShow(id) {
+        try {
+            const connection = await database_1.default.connect();
+            const sql = 'SELECT * FROM orders WHERE id=$1';
+            const result = await connection.query(sql, [id]);
+            connection.release();
+            return result.rows[0];
+        }
+        catch (err) {
+            throw new Error(`Cannot find order ${id}: ${err}`);
+        }
+    }
     async create(userId, orderStatus) {
         try {
             const connection = await database_1.default.connect();

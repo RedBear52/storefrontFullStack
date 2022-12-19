@@ -5,13 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.order = void 0;
 const order_1 = require("../order");
-const product_1 = __importDefault(require("../product"));
 const user_1 = require("../user");
-const testOrderStore = new order_1.OrderStore();
+const user_spec_1 = require("./user_spec");
+const product_spec_1 = require("./product_spec");
+const product_1 = __importDefault(require("../product"));
 exports.order = {
-    userId: 1,
-    orderStatus: 'open'
+    userid: 2,
+    orderstatus: 'open'
 };
+const testOrderStore = new order_1.OrderStore();
+const testUserStore = new user_1.UserStore();
+const testOrderProduct = new product_1.default();
 describe('Order Table Model - Extant Method Checks', () => {
     it('should have an index method', () => {
         expect(testOrderStore.index).toBeDefined();
@@ -30,67 +34,21 @@ describe('Order Table Model - Extant Method Checks', () => {
     });
 });
 describe('Order Table Model - Method Implementation Checks', () => {
-    const testUserStore = new user_1.UserStore();
-    const testProductStore = new product_1.default();
-    // beforeAll(async () => {
-    //     await test_userStore.create(test_user)
-    //     await testProductStore.create(testProduct)
-    //     })
-    // it('index method should return array of orders', async () => {
-    //     const result = await testOrderStore.index()
-    //     expect(result).toEqual([])
-    // })
-    // it('1st show method test should return an UNDEFINED ERROR for expected order object', async () => {
-    //     const result = await store.show(1)
-    //     expect(result).toBeUndefined()
-    // })
-    // it('should create new order', async () => {
-    //     const result = await testOrderStore.create(order.userId, order.orderStatus)
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         userId: 1,
-    //         orderStatus: 'Open'
-    //     })
-    // })
-    // })
-    //   it('create method should add a book', async () => {
-    //     const result = await store.create({
-    //       title: 'Bridge to Terabithia',
-    //       totalPages: 250,
-    //       author: 'Katherine Paterson',
-    //       summary: 'Childrens'
-    //     });
-    //     expect(result).toEqual({
-    //       id: "1",
-    //       title: 'Bridge to Terabithia',
-    //       totalPages: 250,
-    //       author: 'Katherine Paterson',
-    //       summary: 'Childrens'
-    //     });
-    //   });
-    //   it('index method should return a list of books', async () => {
-    //     const result = await store.index();
-    //     expect(result).toEqual([{
-    //       id: "1",
-    //       title: 'Bridge to Terabithia',
-    //       totalPages: 250,
-    //       author: 'Katherine Paterson',
-    //       summary: 'Childrens'
-    //     }]);
-    //   });
-    //   it('show method should return the correct book', async () => {
-    //     const result = await store.show("1");
-    //     expect(result).toEqual({
-    //       id: "1",
-    //       title: 'Bridge to Terabithia',
-    //       totalPages: 250,
-    //       author: 'Katherine Paterson',
-    //       summary: 'Childrens'
-    //     });
-    //   });
-    //   it('delete method should remove the book', async () => {
-    //     store.delete("1");
-    //     const result = await store.index()
-    //     expect(result).toEqual([]);
-    //   });
+    beforeAll(async () => {
+        await testUserStore.create(user_spec_1.testUser);
+        await testOrderProduct.create(product_spec_1.testProduct);
+        await testOrderStore.create(exports.order.userid, exports.order.orderstatus);
+    });
+    it('index method should return array of orders', async () => {
+        const result = await testOrderStore.index();
+        expect(result).toEqual(jasmine.objectContaining(testOrderStore));
+    });
+    it('testShow method should return specifically requested order', async () => {
+        const result = await testOrderStore.testShow(9);
+        expect(result).toEqual({ id: 9, userid: 5, orderstatus: 'open' });
+    });
+    it('should confirm create order method in beforeAll statement is working', async () => {
+        const result = await testOrderStore.create(exports.order.userid, exports.order.orderstatus);
+        expect(result).toEqual(jasmine.objectContaining({ userid: 2, orderstatus: 'open' }));
+    });
 });

@@ -1,10 +1,11 @@
 import { Connection } from 'pg'
 import database from '../database'
+import {TestOrder} from './tests/order_spec'
 import { addProduct } from '../handlers/orders'
 
 export type Order = {
     id?: number
-    userId: number
+    userId: number 
     orderStatus: string
 }
 
@@ -29,6 +30,18 @@ export class OrderStore {
     }
 
     async show(id: number): Promise<Order> {
+        try {
+            const connection = await database.connect()
+            const sql = 'SELECT * FROM orders WHERE id=$1'
+            const result = await connection.query(sql, [id])
+            connection.release()
+            return result.rows[0]
+        } catch (err) {
+          throw new Error(`Cannot find order ${id}: ${err}`)
+        }
+    }
+
+    async testShow(id: number): Promise<TestOrder> {
         try {
             const connection = await database.connect()
             const sql = 'SELECT * FROM orders WHERE id=$1'

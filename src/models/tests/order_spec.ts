@@ -1,15 +1,30 @@
 import {Order, OrderStore} from '../order'
-import ProductStore, { Product } from '../product'
 import {User, UserStore} from '../user'
-import { testProduct } from './product_spec'
 import { testUser } from './user_spec'
+import { testProduct } from './product_spec'
+import OrderProduct, { Product } from '../product'
+
+export type TestOrder = {
+    id?: number
+    userid: number 
+    orderstatus: string
+}
+
+export type TestOrderProduct = {
+    id: number
+    orderId: number
+    productId: number
+    quantity: number
+}
+
+export const order: TestOrder = {
+    userid: 2,
+    orderstatus: 'open'
+}
 
 const testOrderStore = new OrderStore()
-
-export const order: Order = {
-    userId: 1,
-    orderStatus: 'open'
-}
+const testUserStore = new UserStore()
+const testOrderProduct = new OrderProduct()
 
 describe('Order Table Model - Extant Method Checks', () => {
     it('should have an index method', () => {
@@ -34,77 +49,31 @@ describe('Order Table Model - Extant Method Checks', () => {
 })
 
 describe('Order Table Model - Method Implementation Checks', () => {
-    
+    beforeAll(async () => {
+        await testUserStore.create(testUser)
+        await testOrderProduct.create(testProduct)
+        await testOrderStore.create(order.userid, order.orderstatus)
+        })
+    it('index method should return array of orders', async () => {
+        const result = await testOrderStore.index()
+        expect(result).toEqual(
+            jasmine.objectContaining(testOrderStore)
+        )
+    })
 
-    const testUserStore = new UserStore()
-    const testProductStore = new ProductStore()
-    
-    // beforeAll(async () => {
-    //     await test_userStore.create(test_user)
-    //     await testProductStore.create(testProduct)
-    //     })
-    // it('index method should return array of orders', async () => {
-    //     const result = await testOrderStore.index()
-    //     expect(result).toEqual([])
-    // })
+    it('testShow method should return specifically requested order', async () => {
+        const result = await testOrderStore.testShow(9)
+        expect(result).toEqual(
+            { id: 9, userid: 5, orderstatus: 'open' }
+        )
+    })
 
-    // it('1st show method test should return an UNDEFINED ERROR for expected order object', async () => {
-    //     const result = await store.show(1)
-    //     expect(result).toBeUndefined()
-    // })
-
-    // it('should create new order', async () => {
-    //     const result = await testOrderStore.create(order.userId, order.orderStatus)
-    //     expect(result).toEqual({
-    //         id: 1,
-    //         userId: 1,
-    //         orderStatus: 'Open'
-    //     })
-    // })
-// })
-
-//   it('create method should add a book', async () => {
-//     const result = await store.create({
-//       title: 'Bridge to Terabithia',
-//       totalPages: 250,
-//       author: 'Katherine Paterson',
-//       summary: 'Childrens'
-//     });
-//     expect(result).toEqual({
-//       id: "1",
-//       title: 'Bridge to Terabithia',
-//       totalPages: 250,
-//       author: 'Katherine Paterson',
-//       summary: 'Childrens'
-//     });
-//   });
-
-//   it('index method should return a list of books', async () => {
-//     const result = await store.index();
-//     expect(result).toEqual([{
-//       id: "1",
-//       title: 'Bridge to Terabithia',
-//       totalPages: 250,
-//       author: 'Katherine Paterson',
-//       summary: 'Childrens'
-//     }]);
-//   });
-
-//   it('show method should return the correct book', async () => {
-//     const result = await store.show("1");
-//     expect(result).toEqual({
-//       id: "1",
-//       title: 'Bridge to Terabithia',
-//       totalPages: 250,
-//       author: 'Katherine Paterson',
-//       summary: 'Childrens'
-//     });
-//   });
-
-//   it('delete method should remove the book', async () => {
-//     store.delete("1");
-//     const result = await store.index()
-
-//     expect(result).toEqual([]);
-//   });
+    it('should confirm create order method in beforeAll statement is working', async () => {
+        const result = await testOrderStore.create(order.userid, order.orderstatus)
+        expect(result).toEqual(
+            jasmine.objectContaining(
+            { userid: 2, orderstatus: 'open' }
+            )
+        )
+    })
 })

@@ -21,8 +21,8 @@ export const show = async (req: Request, res: Response) => {
 }
 
 export const create = async (req: Request, res: Response) => {
-    
-    const user: User = {
+    try {
+      const user: User = {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         password: req.body.password
@@ -30,6 +30,9 @@ export const create = async (req: Request, res: Response) => {
       const newUser = await store.create(user)
       const token = jwt.sign({user: newUser}, tokenSecret)
       res.json(token)
+    } catch (error) {
+      res.status(500).json({error: 'User could not be created'})
+    }
 }
     
 export const remove = async (req: Request, res: Response) => {

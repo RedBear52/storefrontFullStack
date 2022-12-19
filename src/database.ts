@@ -9,8 +9,6 @@ const {
     POSTGRES_TEST_DB,
     POSTGRES_USER,
     POSTGRES_PASSWORD,
-    POSTGRES_TEST_PASSWORD,
-    POSTGRES_TEST_USER,
     ENV
 } = process.env
 
@@ -31,11 +29,11 @@ if (ENV === 'dev') {
         port: 6543,
         host: POSTGRES_HOST,
         database: POSTGRES_TEST_DB,
-        user: POSTGRES_TEST_USER,
-        password: POSTGRES_TEST_PASSWORD
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
     })
 } else {
-    console.log('man...something went way wrong...')
+    console.log('man...something went way wrong when attempting to connect to the db...')
     
 }
 
