@@ -3,6 +3,11 @@ import {User, UserStore} from '../user'
 import { testUser } from './user_spec'
 import { testProduct } from './product_spec'
 import OrderProduct, { Product } from '../product'
+import supertest from 'supertest'
+import app from '../../server'
+import { response } from 'express'
+
+const request = supertest(app)
 
 export type TestOrder = {
     id?: number
@@ -77,3 +82,42 @@ describe('Order Table Model - Method Implementation Checks', () => {
         )
     })
 })
+
+// ------------------ ENDPOINT TESTING ---------------- //
+describe('Order Endpoint Tests',  () => {
+    let authToken: string
+
+    it('confirm order index route returns 200 + index of orders', async () => {
+        const response = await request.get('/api/orders')
+        expect(response.status).toEqual(200)
+    })
+
+    it('confirm order show route returns 200 + requested order', async () => {
+        const response = await request.get('/api/orders/9')
+        expect(response.status).toEqual(200)
+    })
+
+    // it('should confirm create order method in beforeAll statement is working', async () => {
+    //     const result = await request.post('/orders')
+    //     .send(order)
+    //     expect(result).toEqual(
+    //         jasmine.objectContaining(
+    //         { userid: 2, orderstatus: 'open' }
+    //         )
+    //     )
+    // })
+
+    // it('confirm order show by id route returns 200 + specific order', async () => {
+    //     const response = await request.post('/api/orders/5/products')
+    //     // ---- NEEDS AUTHENTICATION ---- //
+    //     expect(response.status).toEqual(200)
+    // })
+})
+
+// orderRoute.get('/', index)
+// orderRoute.get('/:id', show)
+// orderRoute.post('/', create)
+// orderRoute.put('/:id', update)
+// orderRoute.get('/open/:user_id', authenticateToken, openOrders)
+// orderRoute.get('/closed/:user_id', authenticateToken, closedOrders)
+// orderRoute.post('/:id/products', authenticateToken, addProduct)

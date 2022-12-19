@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.testUser = void 0;
+// import dotenv from 'dotenv'
 const user_1 = require("../user");
 const supertest_1 = __importDefault(require("supertest"));
 const server_1 = __importDefault(require("../../server"));
@@ -61,10 +62,6 @@ describe('user Table Model - Method Implementation Checks', () => {
 // ------------------ ENDPOINT TESTING ---------------- //
 describe('User Endpoint Tests', () => {
     let authToken;
-    it('confirm server is running and responding w/ positive status', async () => {
-        const response = await request.get('/');
-        expect(response.status).toBe(200);
-    });
     it('confirm specific user request route returns 401 to UNAUTHORIZED user', async () => {
         const response = await request.get('/api/users');
         expect(response.status).toBe(401);
