@@ -48,6 +48,6 @@ export const openOrders = async (req: Request, res: Response) => {
 
 export const closedOrders = async (req: Request, res: Response) => {
     const closedOrdersIndex = await store.showClosedOrders(parseInt(req.params.user_id))
-    console.log(closedOrdersIndex)
+    // console.log(closedOrdersIndex)
     res.json(closedOrdersIndex)
 }

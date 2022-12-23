@@ -7,7 +7,6 @@ import { testProduct } from './product_spec'
 
 const request = supertest(app)
 const testUserStore = new UserStore()
-// const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozNjcsImxhc3RfbmFtZSI6Ik1vY2NvIiwiZmlyc3RfbmFtZSI6IlBleXRvbiIsInBhc3N3b3JkIjoiJDJiJDEwJEkvdnAzUC5qZXludmQ1WndsMnE2ZXV0MFZ3S2JRQU9QZ3hvbjBaWVBJQnBvRDRlV1UycnFLIn0sImlhdCI6MTY3MTQ3NjE5MX0.BJ0c7HhqEHDK_parnke1y-elRIuqZEYPitZ1UQGqKXM'
 
 export const testUser: User = {
     last_name: 'Mocco',

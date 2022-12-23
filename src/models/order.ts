@@ -98,7 +98,7 @@ export class OrderStore {
             connection.release()
 
             const order = result.rows[0]
-            console.log(order)
+            // console.log(order)
             return order
         } catch (error) {
             throw new Error(`Could not add product: ${orderProd.productId}  to  order: ${orderProd.orderId}`)

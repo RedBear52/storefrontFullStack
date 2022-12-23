@@ -10,10 +10,10 @@ const authenticateToken = async (req, res, next) => {
     try {
         const authorizationHeader = req.headers.authorization;
         const token = authorizationHeader.slice(7);
-        console.log(token);
+        // console.log(token)
         const verifiedToken = jsonwebtoken_1.default.verify(token, tokenSecret);
         res.locals.users = verifiedToken;
-        console.log(res.locals);
+        // console.log(res.locals)
         next();
     }
     catch (error) {

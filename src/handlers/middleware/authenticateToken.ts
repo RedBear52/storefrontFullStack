@@ -12,11 +12,11 @@ export const authenticateToken = async (
         const authorizationHeader = req.headers.authorization as string
         
         const token = authorizationHeader.slice(7)
-        console.log(token)
+        // console.log(token)
 
         const verifiedToken = jwt.verify(token, tokenSecret)
         res.locals.users = verifiedToken
-        console.log(res.locals)
+        // console.log(res.locals)
 
         next()
     } catch (error) {

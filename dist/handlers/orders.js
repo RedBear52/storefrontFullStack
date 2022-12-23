@@ -42,7 +42,7 @@ const openOrders = async (req, res) => {
 exports.openOrders = openOrders;
 const closedOrders = async (req, res) => {
     const closedOrdersIndex = await store.showClosedOrders(parseInt(req.params.user_id));
-    console.log(closedOrdersIndex);
+    // console.log(closedOrdersIndex)
     res.json(closedOrdersIndex);
 };
 exports.closedOrders = closedOrders;
