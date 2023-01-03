@@ -1,4 +1,4 @@
-import { TestOrder } from '../../models/tests/order_spec'
+import { order, TestOrder } from '../../models/tests/order_spec'
 import { User, UserStore } from '../../models/user'
 import { testUser } from '../../models/tests/user_spec'
 import { Product } from '../../models/product'
@@ -8,50 +8,49 @@ import app from '../../models/../server'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import { OrderStore } from '../../models/order'
-import { updateConstructSignature } from 'typescript'
 
 dotenv.config()
 const tokenSecret = process.env.TOKEN_SECRET as string
+console.log(`tokenSecret matches env file??!: ${tokenSecret}`)
 
 const request = supertest(app)
+
 const testUserStore = new UserStore()
 const testOrderStore = new OrderStore()
 
 // ---- ANOTHER APPROACH/SANDBOX ---- //
-describe('Order Endpoint Tests', () => {
-  const testUser = {
-    last_name: 'Otoole',
-    first_name: 'Keegan',
-    password: 'numberone'
-  } as User
+// describe('Order Endpoint Tests', () => {
+//   const testUser = {
+//     last_name: 'Otoole',
+//     first_name: 'Keegan',
+//     password: 'numberone'
+//   } as User
 
-  let testUserId: number
-  beforeAll(async () => {
-    const newTestUser = await testUserStore.create(testUser)
-    testUser.id = newTestUser.id
+//   let testUserId: number
+//   beforeAll(async () => {
+//     const newTestUser = await testUserStore.create(testUser)
+//     testUser.id = newTestUser.id
 
-    console.log(newTestUser);
-    
+//     console.log(newTestUser);
 
-    const testOrder = {
-      userid: newTestUser.id,
-      orderstatus: 'open'
-    } as TestOrder
+//     const testOrder = {
+//       userid: newTestUser.id,
+//       orderstatus: 'open'
+//     } as TestOrder
 
-    const newTestOrder = await testOrderStore.create(testOrder.userid, testOrder.orderstatus)
-    testOrder.id = newTestOrder.id
+//     const newTestOrder = await testOrderStore.create(testOrder.userid, testOrder.orderstatus)
+//     testOrder.id = newTestOrder.id
 
-    it('should show index of orders', async () => {
-      const testOrderIndex = await testOrderStore.index()
-      expect(testOrderIndex).toContain(
-        jasmine.objectContaining({
-          userid: newTestUser.id,
-          orderstatus: 'open'
-        })
-      )
-    })
-  })
-    
+//     it('should show index of orders', async () => {
+//       const testOrderIndex = await testOrderStore.index()
+//       expect(testOrderIndex).toContain(
+//         jasmine.objectContaining({
+//           userid: newTestUser.id,
+//           orderstatus: 'open'
+//         })
+//       )
+//     })
+//   })
 
     // it('should show specifically requested order to authenticated user', async () => {
     //   const showTestOrder = await testOrderStore.show(12)
@@ -62,12 +61,7 @@ describe('Order Endpoint Tests', () => {
     //     })
     //   )
     // })
-
-  
-
-  
-
-})
+// })
 
 // orderRoute.get('/api/', index)
 // orderRoute.get('/api/:id', show)
@@ -78,73 +72,79 @@ describe('Order Endpoint Tests', () => {
 // orderRoute.post('/api/:id/products', authenticateToken, addProduct)
 
 // ------ TESTING CODE IDEAS FOR AUTHENTICATION TEST SOLUTIONS --------//
-// describe('- Order Handler:', () => {
-//   let orderid: number
-//   let productId: number
-//   let userid: number
-//   let orderproductId: number
-//   let orderstatus: string
-//   let token: string
+describe('Order Enpoint Tests', () => {
+  let orderid: number
+  let productId: number
+  let userid: number
+  let orderproductId: number
+  let orderstatus: string
+  let token: string
 
-//   const order: TestOrder = {
-//     userid: 0,
-//     orderstatus: 'open'
-//   }
+  const order: TestOrder = {
+    userid: 0,
+    orderstatus: 'open'
+  }
 
-//   const orderProduct: TestOrderProduct = {
-//     orderId: 0,
-//     productId: 0,
-//     quantity: 5
-//   }
+  const orderProduct: TestOrderProduct = {
+    orderId: 0,
+    productId: 0,
+    quantity: 5
+  }
 
   // beforeAll(async () => {
   //   const user: User = {
-  //     first_name: 'Cecilia',
-  //     last_name: 'Dopazo',
-  //     password: 'cosocuesiton'
+  //     first_name: 'Otoole',
+  //     last_name: 'Keegan',
+  //     password: 'numberone'
   //   }
-  //   const new_user = await request.post('/api/users').send(user)
-  //   // .set('')
-  //   console.log(`here's new_user: ${new_user.body}`)
-  //   token = new_user.body
-  //   console.log(token)
-  //   const jwt_decode = jwt.verify(token, tokenSecret) 
-  //   console.log(`here's jwt_decode as User id: ${jwt_decode}`)
-    
-  //   // userid = jwt_decode.id as number
-  //   console.log(`here is the userid: ${userid}`)
-  //   order.userid = userid
 
-  //   const product: Product = {
-  //     name: 'Jump Starter Hoop',
-  //     price: 52,
-  //     category: 'cure alls',
-  //   }
-  //   const new_product = await request
-  //     .post('/api/products')
-  //     // .set('Authorization', 'Bearer ' + token)
-  //     .send(product)
-  //   productId = new_product.body.id as number
-  //   orderProduct.productId = productId
+    beforeAll(async () => {
+      const new_user = await request.post('/api/users').send(testUser)
+      // .set('Authorization', 'Bearer' + token)
+      console.log(`here's testUser info: ${testUser.last_name}, ${testUser.first_name}, ${testUser.password}`)
+
+      console.log(`here's what new_user variable returns: ${new_user.body}`)
+      token = new_user.body
+      // console.log(token)
+      const jwt_decode = jwt.verify(token, tokenSecret)
+      console.log(`here's jwt_decode as User id: ${jwt_decode}`)
+      
+      // userid = jwt_decode.id as number
+      console.log(`here is the userid: ${userid}`)
+      order.userid = userid
+  
+      const product: Product = {
+        name: 'Jump Starter Hoop',
+        price: 52,
+        category: 'cure alls',
+      }
+      const new_product = await request
+        .post('/api/products')
+        // .set('Authorization', 'Bearer ' + token)
+        .send(product)
+      productId = new_product.body.id as number
+      orderProduct.productId = productId
+    })
+    it('Create an order', async () => {
+        const response = await request.post('/api/orders').send(order)
+        console.log(`Here's the response.body: ${response.body}`)
+    })
+  })
+
   // })
-
-  // it('Create an order', async () => {
-  //   const response = await request.post('/api/orders').send(order)
-  //   // console.log(response.body)
-    
+  // 
   //   expect(response.status).toBe(200)
   //   expect(response.body.orderid).toEqual(order.id)
   //   expect(response.body.orderstatus).toEqual(order.orderstatus)
-  //   orderid = response.body.id as number
+  //   order.orderid = response.body.id as number
   //   orderProduct.orderId = orderid
   //   console.log(`these two should match: order.userid & userid: ${order.userid}  :  ${userid}`)
   //   console.log(`Here is response: ${response}`)
-    // console.log(`Here is response.body: ${response.body}`)
-    // console.log(`Here is response.body: ${response.body}`)
+  //   console.log(`Here is response.body: ${response.body}`)
+  //   console.log(`Here is response.body: ${response.body}`)
   // })
 // })
 // ------ END CODE TESTS FOR AUTHENTICATION TEST SOLUTIONS --------//
-
 
 
 // ------------------ ENDPOINT TESTING ---------------- //
@@ -197,4 +197,3 @@ describe('Order Endpoint Tests', () => {
 //         expect(response.orderStatus).toEqual(200)
 //     })
 // })
-
