@@ -20,7 +20,9 @@
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "express-jwt": "^8.3.0",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
     "keyv": "^4.5.2",
     "pg": "^8.5.1",
     "typescript": "^4.1.3"
