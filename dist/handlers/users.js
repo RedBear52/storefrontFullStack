@@ -46,6 +46,7 @@ exports.remove = remove;
 const authenticateUser = async (req, res) => {
     try {
         const userReq = req.body;
+        // console.log(`Hello...!!:${userReq}`)
         const userInfo = await store.authenticateUser(userReq);
         if (userInfo) {
             const token = jsonwebtoken_1.default.sign(userInfo, tokenSecret);

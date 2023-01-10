@@ -44,6 +44,8 @@ export const remove = async (req: Request, res: Response) => {
 export const authenticateUser = async (req: Request, res: Response) => {
     try {
       const userReq = req.body as User
+      // console.log(`Hello...!!:${userReq}`)
+      
       const userInfo = await store.authenticateUser(userReq)
       if (userInfo) {
         const token = jwt.sign(userInfo, tokenSecret)
